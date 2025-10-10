@@ -1,6 +1,8 @@
 import { Storage } from "@plasmohq/storage"
 import { useEffect, useState } from "react"
 
+import iconUrl from "data-base64:~assets/icon.png"
+
 const storage = new Storage()
 
 function IndexPopup() {
@@ -55,114 +57,140 @@ function IndexPopup() {
   return (
     <div
       style={{
-        width: 320,
-        padding: 20,
+        width: 360,
+        minHeight: 200,
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        color: "white"
+        background: "#ffffff",
+        color: "#1a1a1a"
       }}>
-      <div style={{ marginBottom: 24 }}>
-        <h1
-          style={{
-            margin: 0,
-            fontSize: 24,
-            fontWeight: 600,
-            letterSpacing: "-0.5px"
-          }}>
-          In Toolkit
-        </h1>
-        <p
-          style={{
-            margin: "4px 0 0 0",
-            fontSize: 14,
-            opacity: 0.9
-          }}>
-          Handy Toolkit for LinkedIn
-        </p>
-      </div>
-
+      {/* Header */}
       <div
         style={{
-          background: "rgba(255, 255, 255, 0.15)",
-          backdropFilter: "blur(10px)",
-          borderRadius: 12,
-          padding: 16,
-          border: "1px solid rgba(255, 255, 255, 0.2)"
+          padding: "24px 24px 20px",
+          borderBottom: "1px solid #f0f0f0"
         }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center"
-          }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <img
+            src={iconUrl}
+            alt="In Toolkit"
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 10
+            }}
+          />
           <div>
-            <h3
+            <h1
               style={{
                 margin: 0,
-                fontSize: 16,
-                fontWeight: 600
+                fontSize: 18,
+                fontWeight: 600,
+                letterSpacing: "-0.3px",
+                color: "#1a1a1a"
               }}>
-              Focus Mode
-            </h3>
+              In Toolkit
+            </h1>
             <p
               style={{
-                margin: "4px 0 0 0",
-                fontSize: 12,
-                opacity: 0.8
+                margin: "2px 0 0 0",
+                fontSize: 13,
+                color: "#6b7280",
+                fontWeight: 400
               }}>
-              {focusModeEnabled
-                ? "Feed hidden with inspiration"
-                : "LinkedIn feed visible"}
+              LinkedIn productivity tools
             </p>
           </div>
-
-          <button
-            onClick={handleToggle}
-            disabled={isLoading}
-            style={{
-              position: "relative",
-              width: 56,
-              height: 32,
-              borderRadius: 16,
-              border: "none",
-              cursor: isLoading ? "not-allowed" : "pointer",
-              background: focusModeEnabled
-                ? "rgba(255, 255, 255, 0.9)"
-                : "rgba(0, 0, 0, 0.2)",
-              transition: "all 0.3s ease",
-              opacity: isLoading ? 0.5 : 1
-            }}>
-            <div
-              style={{
-                position: "absolute",
-                top: 4,
-                left: focusModeEnabled ? 28 : 4,
-                width: 24,
-                height: 24,
-                borderRadius: "50%",
-                background: focusModeEnabled
-                  ? "#667eea"
-                  : "rgba(255, 255, 255, 0.8)",
-                transition: "left 0.3s ease",
-                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)"
-              }}
-            />
-          </button>
         </div>
       </div>
 
-      <div
-        style={{
-          marginTop: 16,
-          padding: 12,
-          background: "rgba(255, 255, 255, 0.1)",
-          borderRadius: 8,
-          fontSize: 11,
-          opacity: 0.8,
-          textAlign: "center"
-        }}>
-        Toggle Focus Mode to replace your LinkedIn feed with inspirational
-        quotes
+      {/* Content */}
+      <div style={{ padding: "20px 24px 24px" }}>
+        {/* Focus Mode Card */}
+        <div
+          style={{
+            background: "#fafafa",
+            borderRadius: 12,
+            padding: "16px 18px",
+            border: "1px solid #f0f0f0",
+            transition: "all 0.2s ease"
+          }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center"
+            }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <h3
+                  style={{
+                    margin: 0,
+                    fontSize: 15,
+                    fontWeight: 600,
+                    color: "#1a1a1a"
+                  }}>
+                  Focus Mode
+                </h3>
+                {focusModeEnabled && (
+                  <span
+                    style={{
+                      fontSize: 11,
+                      padding: "2px 8px",
+                      borderRadius: 6,
+                      background: "rgb(7, 68, 117)",
+                      color: "white",
+                      fontWeight: 500
+                    }}>
+                    Active
+                  </span>
+                )}
+              </div>
+              <p
+                style={{
+                  margin: "6px 0 0 0",
+                  fontSize: 13,
+                  color: "#6b7280",
+                  lineHeight: 1.4
+                }}>
+                {focusModeEnabled
+                  ? "Feed replaced with daily inspiration"
+                  : "Show your LinkedIn feed"}
+              </p>
+            </div>
+
+            {/* Toggle Switch */}
+            <button
+              onClick={handleToggle}
+              disabled={isLoading}
+              style={{
+                position: "relative",
+                width: 48,
+                height: 28,
+                borderRadius: 14,
+                border: "none",
+                cursor: isLoading ? "not-allowed" : "pointer",
+                background: focusModeEnabled ? "rgb(7, 68, 117)" : "#d1d5db",
+                transition: "all 0.3s ease",
+                opacity: isLoading ? 0.5 : 1,
+                flexShrink: 0,
+                marginLeft: 12
+              }}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: 3,
+                  left: focusModeEnabled ? 23 : 3,
+                  width: 22,
+                  height: 22,
+                  borderRadius: "50%",
+                  background: "#ffffff",
+                  transition: "left 0.3s ease",
+                  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)"
+                }}
+              />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   )
