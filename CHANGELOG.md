@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/igventurelli/in-toolkit/compare/v1.0.0...v1.0.1) (2025-10-17)
+
+
+### Bug Fixes
+
+* cors ([ea31567](https://github.com/igventurelli/in-toolkit/commit/ea31567e0507d6ddd28dbd08f3e4ede4b0ea4a51))
+
 # 1.0.0 (2025-10-17)
 
 
