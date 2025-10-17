@@ -46,9 +46,10 @@ const LinkedInFocus = () => {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        min-height: 100vh;
-        background: linear-gradient(135deg, rgb(7, 68, 117) 0%, rgb(4, 47, 82) 100%);
-        color: white;
+        background: white;
+        border: 0.5px solid lightgray;
+        border-radius: 10px;
+        color: #495057;
         text-align: center;
         padding: 60px 40px;
       `
@@ -57,31 +58,28 @@ const LinkedInFocus = () => {
       const quote = await fetchQuote()
       
       placeholder.innerHTML = `
-        <div style="max-width: 700px;">
-          <div style="font-size: 48px; margin-bottom: 32px; opacity: 0.9;">🎯</div>
-          <blockquote style="font-size: 32px; line-height: 1.5; font-weight: 300; margin: 0 0 24px 0; font-style: italic; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; max-width: 700px; margin: 0 auto;">
+          <div style="font-size: 48px; margin-bottom: 10px; opacity: 0.7;">⚡</div>
+          <blockquote style="font-size: 32px; line-height: 1.5; font-weight: 300; margin: 0 0 10px 0; font-style: italic; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); color: #212529; text-align: center;">
             "${quote.q}"
           </blockquote>
-          <footer style="font-size: 20px; font-weight: 500; opacity: 0.9; margin-bottom: 50px;">
-            — ${quote.a}
+          <footer style="font-size: 20px; font-weight: 500; opacity: 0.8; color: #6c757d; text-align: center; margin-bottom: 10px;">
+            ${quote.a}
           </footer>
-          <div style="padding: 20px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border-radius: 12px; font-size: 14px; border: 1px solid rgba(255, 255, 255, 0.2); margin-bottom: 24px;">
-            <p style="margin: 0 0 8px 0; opacity: 0.9;">Focus Mode is active. Your LinkedIn feed is hidden.</p>
-            <p style="margin: 0; font-size: 12px; opacity: 0.7;">
-              Inspirational quotes provided by <a href="https://zenquotes.io/" target="_blank" style="color: white; text-decoration: underline;">ZenQuotes API</a>
-            </p>
+          <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 10px;">
+            <span style="font-size: 12px; color: #6c757d;">
+              Quotes by <a href="https://zenquotes.io/" target="_blank" style="color: #6c757d; text-decoration: underline;">ZenQuotes</a>
+            </span>
           </div>
-          <button id="get-new-quote" style="padding: 12px 28px; background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 8px; color: white; font-size: 15px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(10px);">
-            Get New Quote
-          </button>
         </div>
       `
 
-      // Add click handler for the button
+      // Add click handler for the link
       setTimeout(() => {
-        const button = placeholder.querySelector("#get-new-quote")
-        if (button) {
-          button.addEventListener("click", async () => {
+        const link = placeholder.querySelector("#get-new-quote")
+        if (link) {
+          link.addEventListener("click", async (e) => {
+            e.preventDefault()
             const newQuote = await fetchQuote()
             const blockquote = placeholder.querySelector("blockquote")
             const footer = placeholder.querySelector("footer")
@@ -89,12 +87,12 @@ const LinkedInFocus = () => {
             if (footer) footer.textContent = `— ${newQuote.a}`
           })
           
-          button.addEventListener("mouseenter", (e) => {
-            (e.target as HTMLElement).style.background = "rgba(255, 255, 255, 0.3)"
+          link.addEventListener("mouseenter", (e) => {
+            (e.target as HTMLElement).style.color = "#007bff"
           })
           
-          button.addEventListener("mouseleave", (e) => {
-            (e.target as HTMLElement).style.background = "rgba(255, 255, 255, 0.2)"
+          link.addEventListener("mouseleave", (e) => {
+            (e.target as HTMLElement).style.color = "#6c757d"
           })
         }
       }, 0)
