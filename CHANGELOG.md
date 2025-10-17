@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/igventurelli/in-toolkit/compare/v1.0.2...v1.0.3) (2025-10-17)
+
+
+### Bug Fixes
+
+* quote div ([ad73e23](https://github.com/igventurelli/in-toolkit/commit/ad73e23ecfb69861ccf2514d90c62a3f4bb06045))
+
 ## [1.0.2](https://github.com/igventurelli/in-toolkit/compare/v1.0.1...v1.0.2) (2025-10-17)
 
 
