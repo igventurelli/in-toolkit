@@ -51,27 +51,60 @@ const LinkedInFocus = () => {
         border-radius: 10px;
         color: #495057;
         text-align: center;
-        padding: 60px 40px;
+        padding: 20px;
       `
 
       // Fetch and display quote
       const quote = await fetchQuote()
       
+      // Get the extension icon URL by messaging the background script
+      const iconUrl = await new Promise<string>((resolve) => {
+        chrome.runtime.sendMessage(
+          { type: "GET_ICON_URL" },
+          (response: { iconUrl?: string }) => {
+            resolve(response?.iconUrl || "/icon.png")
+          }
+        )
+      })
+      
       placeholder.innerHTML = `
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; max-width: 700px; margin: 0 auto;">
-          <div style="font-size: 48px; margin-bottom: 10px; opacity: 0.7;">⚡</div>
-          <blockquote style="font-size: 32px; line-height: 1.5; font-weight: 300; margin: 0 0 10px 0; font-style: italic; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); color: #212529; text-align: center;">
-            "${quote.q}"
-          </blockquote>
-          <footer style="font-size: 20px; font-weight: 500; opacity: 0.8; color: #6c757d; text-align: center; margin-bottom: 10px;">
-            ${quote.a}
-          </footer>
-          <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 10px;">
-            <span style="font-size: 12px; color: #6c757d;">
-              Quotes by <a href="https://zenquotes.io/" target="_blank" style="color: #6c757d; text-decoration: underline;">ZenQuotes</a>
-            </span>
+          <!-- Header -->
+          <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <img
+                src="${iconUrl}"
+                alt="In Toolkit"
+                style="width: 40px; height: 40px; border-radius: 10px;"
+              />
+              <div>
+                <h1 style="text-align: left; margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.3px; color: #1a1a1a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                  In Toolkit
+                </h1>
+                <p style="margin: 2px 0 0 0; font-size: 13px; color: #6b7280; font-weight: 400; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                  LinkedIn productivity tools
+                </p>
+              </div>
+            </div>
+            <div style="font-size: 11px; padding: 2px 8px; border-radius: 6px; background: rgb(7, 68, 117); color: white; font-weight: 500;">
+              Focus Mode Active
+            </div>
           </div>
-        </div>
+          
+          <!-- Main Content -->
+          <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; max-width: 700px; margin: 0 auto; padding: 0 24px;">
+            <div style="font-size: 48px; margin-bottom: 10px; opacity: 0.7;">⚡</div>
+            <blockquote style="font-size: 32px; line-height: 1.5; font-weight: 300; margin: 0 0 10px 0; font-style: italic; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); color: #212529; text-align: center;">
+              "${quote.q}"
+            </blockquote>
+            <footer style="font-size: 20px; font-weight: 500; opacity: 0.8; color: #6c757d; text-align: center; margin-bottom: 10px;">
+              ${quote.a}
+            </footer>
+            <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 10px;">
+              <span style="font-size: 12px; color: #6c757d;">
+                Quotes by <a href="https://zenquotes.io/" target="_blank" style="color: #6c757d; text-decoration: underline;">ZenQuotes</a>
+              </span>
+            </div>
+          </div>
       `
 
       // Add click handler for the link

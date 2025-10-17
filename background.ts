@@ -25,6 +25,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     // Return true to indicate we'll respond asynchronously
     return true
+  } else if (request.type === "GET_ICON_URL") {
+    // Return the extension icon URL - use one of the generated icons
+    sendResponse({ iconUrl: chrome.runtime.getURL("icon48.plasmo.a78c509e.png") })
+    return true
   }
 })
 
