@@ -2,7 +2,7 @@
   "name": "in-toolkit",
   "displayName": "In toolkit",
   "private": true,
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A Handy Browser Extension for LinkedIn",
   "author": "Igor Venturelli <igventurelli@gmail.com>",
   "scripts": {
@@ -37,8 +37,12 @@
     ],
     "web_accessible_resources": [
       {
-        "resources": ["icon48.plasmo.a78c509e.png"],
-        "matches": ["https://www.linkedin.com/*"]
+        "resources": [
+          "icon48.plasmo.a78c509e.png"
+        ],
+        "matches": [
+          "https://www.linkedin.com/*"
+        ]
       }
     ]
   }
