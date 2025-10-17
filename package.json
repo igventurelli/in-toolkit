@@ -2,7 +2,7 @@
   "name": "in-toolkit",
   "displayName": "In toolkit",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A Handy Browser Extension for LinkedIn",
   "author": "Igor Venturelli <igventurelli@gmail.com>",
   "scripts": {
