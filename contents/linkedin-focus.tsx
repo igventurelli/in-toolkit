@@ -99,11 +99,18 @@ const LinkedInFocus = () => {
             <footer style="font-size: 20px; font-weight: 500; opacity: 0.8; color: #6c757d; text-align: center; margin-bottom: 10px;">
               ${quote.a}
             </footer>
-            <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 10px;">
+            <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 20px;">
               <span style="font-size: 12px; color: #6c757d;">
                 Quotes by <a href="https://zenquotes.io/" target="_blank" style="color: #6c757d; text-decoration: underline;">ZenQuotes</a>
               </span>
             </div>
+          </div>
+
+          <!-- Buy Me A Coffee -->
+          <div style="display: flex; justify-content: end; width: 100%;">
+            <a href="https://www.buymeacoffee.com/igventurelli" target="_blank" style="opacity: 0.7; transition: opacity 0.2s ease; height: 40px;">
+              <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px;" >
+            </a>
           </div>
       `
 
