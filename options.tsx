@@ -17,6 +17,7 @@ function OptionsIndex() {
   const [templates, setTemplates] = useState<MessageTemplate[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
+  const [isClosing, setIsClosing] = useState(false)
   const [editingTemplate, setEditingTemplate] = useState<MessageTemplate | null>(null)
   const [formData, setFormData] = useState({
     name: "",
@@ -76,9 +77,13 @@ function OptionsIndex() {
   }
 
   const resetForm = () => {
-    setFormData({ name: "", content: "" })
-    setEditingTemplate(null)
-    setShowForm(false)
+    setIsClosing(true)
+    setTimeout(() => {
+      setFormData({ name: "", content: "" })
+      setEditingTemplate(null)
+      setShowForm(false)
+      setIsClosing(false)
+    }, 200)
   }
 
   const handleEdit = (template: MessageTemplate) => {
@@ -151,59 +156,110 @@ function OptionsIndex() {
       background: "#ffffff",
       color: "#1a1a1a"
     }}>
+      <style>
+        {`
+          @keyframes fadeIn {
+            from {
+              opacity: 0;
+            }
+            to {
+              opacity: 1;
+            }
+          }
+          
+          @keyframes slideIn {
+            from {
+              opacity: 0;
+              transform: scale(0.9) translateY(-20px);
+            }
+            to {
+              opacity: 1;
+              transform: scale(1) translateY(0);
+            }
+          }
+          
+          @keyframes fadeOut {
+            from {
+              opacity: 1;
+            }
+            to {
+              opacity: 0;
+            }
+          }
+          
+          @keyframes slideOut {
+            from {
+              opacity: 1;
+              transform: scale(1) translateY(0);
+            }
+            to {
+              opacity: 0;
+              transform: scale(0.9) translateY(-20px);
+            }
+          }
+        `}
+      </style>
       {/* Header */}
       <div style={{
         padding: "24px",
         borderBottom: "1px solid #f0f0f0",
         background: "#fafafa"
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-          <img
-            src={iconUrl}
-            alt="In Toolkit"
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: 10
-            }}
-          />
-          <div>
-            <h1 style={{
-              margin: 0,
-              fontSize: 24,
-              fontWeight: 600,
-              color: "#1a1a1a"
-            }}>
-              Message Templates
-            </h1>
-            <p style={{
-              margin: "4px 0 0 0",
-              fontSize: 14,
-              color: "#6b7280"
-            }}>
-              Create and manage your LinkedIn message templates
-            </p>
+        <div style={{
+          maxWidth: "800px",
+          margin: "0 auto",
+          width: "100%"
+        }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <img
+                src={iconUrl}
+                alt="In Toolkit"
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 10
+                }}
+              />
+              <div>
+                <h1 style={{
+                  margin: 0,
+                  fontSize: 24,
+                  fontWeight: 600,
+                  color: "#1a1a1a"
+                }}>
+                  Message Templates
+                </h1>
+                <p style={{
+                  margin: "4px 0 0 0",
+                  fontSize: 14,
+                  color: "#6b7280"
+                }}>
+                  Create and manage your LinkedIn message templates
+                </p>
+              </div>
+            </div>
+            
+            <button
+              onClick={() => setShowForm(true)}
+              style={{
+                background: "#084475",
+                color: "white",
+                border: "none",
+                padding: "10px 20px",
+                borderRadius: "8px",
+                fontSize: "14px",
+                fontWeight: "500",
+                cursor: "pointer",
+                transition: "background-color 0.2s ease"
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.background = "#0056b3"}
+              onMouseLeave={(e) => e.currentTarget.style.background = "#084475"}
+            >
+              + Add New Template
+            </button>
           </div>
         </div>
-        
-        <button
-          onClick={() => setShowForm(true)}
-          style={{
-            background: "#084475",
-            color: "white",
-            border: "none",
-            padding: "10px 20px",
-            borderRadius: "8px",
-            fontSize: "14px",
-            fontWeight: "500",
-            cursor: "pointer",
-            transition: "background-color 0.2s ease"
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.background = "#0056b3"}
-          onMouseLeave={(e) => e.currentTarget.style.background = "#084475"}
-        >
-          + Add New Template
-        </button>
       </div>
 
       {/* Content */}
@@ -238,7 +294,13 @@ function OptionsIndex() {
             </button>
           </div>
         ) : (
-          <div style={{ display: "grid", gap: "16px" }}>
+          <div style={{ 
+            display: "grid", 
+            gap: "16px",
+            maxWidth: "800px",
+            margin: "0 auto",
+            width: "100%"
+          }}>
             {templates.map((template) => (
               <div
                 key={template.id}
@@ -372,27 +434,34 @@ function OptionsIndex() {
 
       {/* Form Modal */}
       {showForm && (
-        <div style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: "rgba(0, 0, 0, 0.5)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 1000
-        }}>
-          <div style={{
-            background: "white",
-            borderRadius: "12px",
-            padding: "24px",
-            width: "90%",
-            maxWidth: "600px",
-            maxHeight: "80vh",
-            overflow: "auto"
-          }}>
+        <div 
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+            animation: isClosing ? "fadeOut 0.2s ease-in" : "fadeIn 0.2s ease-out"
+          }}
+        >
+          <div 
+            style={{
+              background: "white",
+              borderRadius: "12px",
+              padding: "24px",
+              width: "90%",
+              maxWidth: "600px",
+              maxHeight: "80vh",
+              overflow: "auto",
+              animation: isClosing ? "slideOut 0.2s ease-in" : "slideIn 0.3s ease-out",
+              boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+            }}
+          >
             <h2 style={{
               margin: "0 0 20px 0",
               fontSize: "20px",
@@ -451,13 +520,15 @@ function OptionsIndex() {
                     type="button"
                     onClick={() => insertVariable("name")}
                     style={{
-                      background: "#f3f4f6",
-                      color: "#374151",
-                      border: "1px solid #d1d5db",
-                      padding: "4px 8px",
+                      background: "#f8f9fa",
+                      color: "#e83e8c",
+                      border: "1px solid #e9ecef",
+                      padding: "4px 6px",
                       borderRadius: "4px",
                       fontSize: "12px",
-                      cursor: "pointer"
+                      fontFamily: "Monaco, Menlo, 'Ubuntu Mono', monospace",
+                      cursor: "pointer",
+                      fontWeight: "500"
                     }}
                   >
                     {"{name}"}
@@ -466,13 +537,15 @@ function OptionsIndex() {
                     type="button"
                     onClick={() => insertVariable("fullName")}
                     style={{
-                      background: "#f3f4f6",
-                      color: "#374151",
-                      border: "1px solid #d1d5db",
-                      padding: "4px 8px",
+                      background: "#f8f9fa",
+                      color: "#e83e8c",
+                      border: "1px solid #e9ecef",
+                      padding: "4px 6px",
                       borderRadius: "4px",
                       fontSize: "12px",
-                      cursor: "pointer"
+                      fontFamily: "Monaco, Menlo, 'Ubuntu Mono', monospace",
+                      cursor: "pointer",
+                      fontWeight: "500"
                     }}
                   >
                     {"{fullName}"}
@@ -517,7 +590,7 @@ function OptionsIndex() {
                   style={{
                     background: "transparent",
                     color: "#6b7280",
-                    border: "1px solid #d1d5db",
+                    border: "0px solid #d1d5db",
                     padding: "10px 20px",
                     borderRadius: "8px",
                     fontSize: "14px",
