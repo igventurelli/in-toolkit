@@ -191,6 +191,74 @@ function IndexPopup() {
             </button>
           </div>
         </div>
+
+        {/* Templates Section */}
+        <div style={{ marginTop: "16px" }}>
+          <button
+            onClick={() => {
+              chrome.tabs.create({
+                url: chrome.runtime.getURL("options.html")
+              })
+            }}
+            style={{
+              width: "100%",
+              background: "#f8fafc",
+              border: "1px solid #e2e8f0",
+              borderRadius: "8px",
+              padding: "12px 16px",
+              cursor: "pointer",
+              transition: "all 0.2s ease",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between"
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "#f1f5f9"
+              e.currentTarget.style.borderColor = "#cbd5e1"
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "#f8fafc"
+              e.currentTarget.style.borderColor = "#e2e8f0"
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <div style={{
+                width: "32px",
+                height: "32px",
+                background: "#e0f2fe",
+                borderRadius: "8px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "16px"
+              }}>
+                📝
+              </div>
+              <div style={{ textAlign: "left" }}>
+                <div style={{
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  color: "#1a1a1a",
+                  marginBottom: "2px"
+                }}>
+                  Message Templates
+                </div>
+                <div style={{
+                  fontSize: "12px",
+                  color: "#6b7280"
+                }}>
+                  Create and manage templates
+                </div>
+              </div>
+            </div>
+            <div style={{
+              fontSize: "12px",
+              color: "#6b7280"
+            }}>
+              →
+            </div>
+          </button>
+        </div>
       </div>
     </div>
   )
