@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/igventurelli/in-toolkit/compare/v1.0.3...v1.0.4) (2025-10-17)
+
+
+### Bug Fixes
+
+* adding buy me a coffee icon ([8053202](https://github.com/igventurelli/in-toolkit/commit/8053202aa6771d94a613c205d20b88f2c71a9628))
+
 ## [1.0.3](https://github.com/igventurelli/in-toolkit/compare/v1.0.2...v1.0.3) (2025-10-17)
 
 
