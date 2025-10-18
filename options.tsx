@@ -189,7 +189,7 @@ function OptionsIndex() {
         <button
           onClick={() => setShowForm(true)}
           style={{
-            background: "#007bff",
+            background: "#084475",
             color: "white",
             border: "none",
             padding: "10px 20px",
@@ -200,7 +200,7 @@ function OptionsIndex() {
             transition: "background-color 0.2s ease"
           }}
           onMouseEnter={(e) => e.currentTarget.style.background = "#0056b3"}
-          onMouseLeave={(e) => e.currentTarget.style.background = "#007bff"}
+          onMouseLeave={(e) => e.currentTarget.style.background = "#084475"}
         >
           + Add New Template
         </button>
@@ -224,7 +224,7 @@ function OptionsIndex() {
             <button
               onClick={() => setShowForm(true)}
               style={{
-                background: "#007bff",
+                background: "#084475",
                 color: "white",
                 border: "none",
                 padding: "12px 24px",
@@ -242,12 +242,26 @@ function OptionsIndex() {
             {templates.map((template) => (
               <div
                 key={template.id}
+                onClick={() => handleEdit(template)}
                 style={{
                   background: "#ffffff",
                   border: "1px solid #e5e7eb",
                   borderRadius: "12px",
                   padding: "20px",
-                  transition: "all 0.2s ease"
+                  transition: "all 0.2s ease",
+                  cursor: "pointer"
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "#f8fafc"
+                  e.currentTarget.style.borderColor = "#d1d5db"
+                  e.currentTarget.style.transform = "translateY(-1px)"
+                  e.currentTarget.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.1)"
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "#ffffff"
+                  e.currentTarget.style.borderColor = "#e5e7eb"
+                  e.currentTarget.style.transform = "translateY(0)"
+                  e.currentTarget.style.boxShadow = "none"
                 }}
               >
                 <div style={{
@@ -271,7 +285,7 @@ function OptionsIndex() {
                           fontSize: "11px",
                           padding: "2px 8px",
                           borderRadius: "6px",
-                          background: "#10b981",
+                          background: "#084475",
                           color: "white",
                           fontWeight: "500"
                         }}>
@@ -298,11 +312,14 @@ function OptionsIndex() {
                 }}>
                   {!template.isDefault && (
                     <button
-                      onClick={() => handleSetDefault(template.id)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleSetDefault(template.id)
+                      }}
                       style={{
                         background: "transparent",
-                        color: "#007bff",
-                        border: "1px solid #007bff",
+                        color: "#084475",
+                        border: "1px solid #084475",
                         padding: "6px 12px",
                         borderRadius: "6px",
                         fontSize: "12px",
@@ -313,11 +330,14 @@ function OptionsIndex() {
                     </button>
                   )}
                   <button
-                    onClick={() => handleEdit(template)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleEdit(template)
+                    }}
                     style={{
                       background: "transparent",
-                      color: "#6b7280",
-                      border: "1px solid #d1d5db",
+                      color: "#000",
+                      border: "1px solid black",
                       padding: "6px 12px",
                       borderRadius: "6px",
                       fontSize: "12px",
@@ -327,7 +347,10 @@ function OptionsIndex() {
                     Edit
                   </button>
                   <button
-                    onClick={() => handleDelete(template.id)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleDelete(template.id)
+                    }}
                     style={{
                       background: "transparent",
                       color: "#dc2626",
@@ -506,7 +529,7 @@ function OptionsIndex() {
                 <button
                   type="submit"
                   style={{
-                    background: "#007bff",
+                    background: "#084475",
                     color: "white",
                     border: "none",
                     padding: "10px 20px",
