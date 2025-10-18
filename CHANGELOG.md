@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/igventurelli/in-toolkit/compare/v1.0.4...v1.0.5) (2025-10-18)
+
+
+### Bug Fixes
+
+* added loading state for quotes ([f52715f](https://github.com/igventurelli/in-toolkit/commit/f52715fd4ca247226dc7761e02b4c357d7272731))
+
 ## [1.0.4](https://github.com/igventurelli/in-toolkit/compare/v1.0.3...v1.0.4) (2025-10-17)
 
 
