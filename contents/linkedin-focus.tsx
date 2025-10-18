@@ -54,20 +54,25 @@ const LinkedInFocus = () => {
         padding: 20px;
       `
 
-      // Fetch and display quote
-      const quote = await fetchQuote()
-      
-      // Get the extension icon URL by messaging the background script
-      const iconUrl = await new Promise<string>((resolve) => {
-        chrome.runtime.sendMessage(
-          { type: "GET_ICON_URL" },
-          (response: { iconUrl?: string }) => {
-            resolve(response?.iconUrl || "/icon.png")
-          }
-        )
-      })
-      
       placeholder.innerHTML = `
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 200px; gap: 20px;">
+          <div style="width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #94a8bd; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+          <div style="text-align: center;">
+            <h1 style="margin: 0; font-size: 18px; color: #333;">Loading quote...</h1>
+            <p style="margin: 5px 0 0 0; font-size: 14px; color: #666;">Please wait while we fetch your inspiration</p>
+          </div>
+        </div>
+        <style>
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        </style>
+      `
+
+      // Fetch and display quote
+      const quote = fetchQuote().then((quote) => {
+        placeholder.innerHTML = `
           <!-- Header -->
           <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
             <div style="display: flex; align-items: center; gap: 12px;">
@@ -113,6 +118,20 @@ const LinkedInFocus = () => {
             </a>
           </div>
       `
+      }).catch((error) => {
+        console.error("Error fetching quote:", error)
+        placeholder.innerHTML = `<h1>Error fetching quote</h1><p>${error.message}</p>`
+      })
+      
+      // Get the extension icon URL by messaging the background script
+      const iconUrl = await new Promise<string>((resolve) => {
+        chrome.runtime.sendMessage(
+          { type: "GET_ICON_URL" },
+          (response: { iconUrl?: string }) => {
+            resolve(response?.iconUrl || "/icon.png")
+          }
+        )
+      })
 
       // Add click handler for the link
       setTimeout(() => {
