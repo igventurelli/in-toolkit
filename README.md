@@ -22,7 +22,7 @@ Run the following:
 
 ```bash
 pnpm build
-# or
+# or 
 npm run build
 ```
 
