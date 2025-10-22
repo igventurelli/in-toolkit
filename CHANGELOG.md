@@ -1,3 +1,10 @@
+## [1.0.6](https://github.com/igventurelli/in-toolkit/compare/v1.0.5...v1.0.6) (2025-10-22)
+
+
+### Bug Fixes
+
+* trigger release ([825f99c](https://github.com/igventurelli/in-toolkit/commit/825f99c220b526c6fedc51c44af039cbeee0f06a))
+
 ## [1.0.5](https://github.com/igventurelli/in-toolkit/compare/v1.0.4...v1.0.5) (2025-10-18)
 
 
