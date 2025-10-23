@@ -19,6 +19,11 @@ const LinkedInFocus = () => {
   useEffect(() => {
     const PLACEHOLDER_ID = "in-toolkit-placeholder"
 
+    const isFeedPage = () => {
+      const url = new URL(window.location.href)
+      return url.pathname.startsWith('/feed')
+    }
+
     const fetchQuote = (): Promise<Quote> => {
       return new Promise((resolve) => {
         chrome.runtime.sendMessage(
@@ -163,6 +168,20 @@ const LinkedInFocus = () => {
       const enabled = await storage.get<boolean>("focusModeEnabled")
       const mainElement = document.querySelector("main") as HTMLElement
       
+      // Only apply focus mode if we're on the /feed page
+      if (!isFeedPage()) {
+        // If not on feed page, ensure any existing placeholder is removed
+        const placeholder = document.getElementById(PLACEHOLDER_ID)
+        if (placeholder) {
+          placeholder.remove()
+        }
+        // Ensure main element is visible
+        if (mainElement) {
+          mainElement.style.display = ""
+        }
+        return
+      }
+      
       if (mainElement) {
         if (enabled) {
           // Hide the feed
@@ -196,6 +215,19 @@ const LinkedInFocus = () => {
       if (message.type === "FOCUS_MODE_CHANGED") {
         const mainElement = document.querySelector("main") as HTMLElement
         const placeholder = document.getElementById(PLACEHOLDER_ID)
+        
+        // Only apply focus mode if we're on the /feed page
+        if (!isFeedPage()) {
+          // If not on feed page, ensure any existing placeholder is removed
+          if (placeholder) {
+            placeholder.remove()
+          }
+          // Ensure main element is visible
+          if (mainElement) {
+            mainElement.style.display = ""
+          }
+          return
+        }
         
         if (mainElement) {
           if (message.enabled) {
