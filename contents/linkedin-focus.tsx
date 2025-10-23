@@ -208,6 +208,83 @@ const LinkedInFocus = () => {
     // Apply on mount
     applyFocusMode()
 
+    // Track URL changes with multiple detection methods
+    let currentUrl = window.location.href
+    let lastPathname = window.location.pathname
+
+    const handleUrlChange = () => {
+      const newUrl = window.location.href
+      const newPathname = window.location.pathname
+      
+      if (newUrl !== currentUrl || newPathname !== lastPathname) {
+        console.log('URL change detected:', { 
+          oldUrl: currentUrl, 
+          newUrl, 
+          oldPath: lastPathname, 
+          newPath: newPathname,
+          isFeedPage: isFeedPage()
+        })
+        
+        currentUrl = newUrl
+        lastPathname = newPathname
+        
+        if (isFeedPage()) {
+          console.log('Re-applying focus mode on feed page')
+          applyFocusMode()
+        }
+      }
+    }
+
+    // Method 1: History API overrides
+    const originalPushState = history.pushState
+    const originalReplaceState = history.replaceState
+
+    history.pushState = function(...args) {
+      console.log('pushState called', args)
+      originalPushState.apply(history, args)
+      setTimeout(handleUrlChange, 100)
+    }
+
+    history.replaceState = function(...args) {
+      console.log('replaceState called', args)
+      originalReplaceState.apply(history, args)
+      setTimeout(handleUrlChange, 100)
+    }
+
+    // Method 2: Popstate events
+    window.addEventListener('popstate', () => {
+      console.log('popstate event')
+      setTimeout(handleUrlChange, 100)
+    })
+
+    // Method 3: Periodic URL checking (fallback)
+    const urlCheckInterval = setInterval(() => {
+      handleUrlChange()
+    }, 1000)
+
+    // Method 4: Mutation observer for DOM changes
+    const observer = new MutationObserver((mutations) => {
+      // Check if main content area changed
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'childList') {
+          mutation.addedNodes.forEach((node) => {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+              const element = node as Element
+              if (element.tagName === 'MAIN' || element.querySelector('main')) {
+                console.log('Main element detected via mutation observer')
+                setTimeout(handleUrlChange, 200)
+              }
+            }
+          })
+        }
+      })
+    })
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    })
+
     // Listen for messages from the popup
     const messageListener = async (
       message: { type: string; enabled: boolean }
@@ -256,6 +333,13 @@ const LinkedInFocus = () => {
 
     return () => {
       chrome.runtime.onMessage.removeListener(messageListener)
+      window.removeEventListener('popstate', handleUrlChange)
+      clearInterval(urlCheckInterval)
+      observer.disconnect()
+      
+      // Restore original history methods
+      history.pushState = originalPushState
+      history.replaceState = originalReplaceState
     }
   }, [])
 
