@@ -1,3 +1,10 @@
+## [1.0.8](https://github.com/igventurelli/in-toolkit/compare/v1.0.7...v1.0.8) (2025-10-23)
+
+
+### Bug Fixes
+
+* page change lost blocker ([5b770de](https://github.com/igventurelli/in-toolkit/commit/5b770deb25f83b07c2a11c7d8c79cf1c808dfd80))
+
 ## [1.0.7](https://github.com/igventurelli/in-toolkit/compare/v1.0.6...v1.0.7) (2025-10-23)
 
 
