@@ -28,7 +28,6 @@ const TemplateButton = () => {
     loadTemplates()
     extractContactInfo()
     
-    // Re-extract contact info when the page changes
     const intervalId = setInterval(() => {
       extractContactInfo()
     }, 1000)
@@ -46,26 +45,18 @@ const TemplateButton = () => {
   }
 
   const extractContactInfo = () => {
-    // Try to extract contact name from the current conversation/message thread
     const nameSelectors = [
-      // Message thread header
       '.msg-s-message-list__name',
       '.msg-s-message-list__name a',
       '.msg-s-message-list__name .msg-s-message-list__name-link',
       '.msg-s-message-list__name .msg-s-message-list__name-link span',
-      // Conversation header
       '.msg-conversation-listitem__participant-names',
       '.msg-conversation-listitem__participant-names a',
-      // Profile name in conversation
       'h1[data-anonymize="person-name"]',
-      // Alternative selectors for active conversation
       '.msg-s-message-list__name-link',
       '.msg-s-message-list__name-link span',
-      // Message thread title
       '.msg-s-message-list__name .msg-s-message-list__name-link'
     ]
-
-    // First, try to find the active conversation name
     const activeConversationSelectors = [
       '.msg-s-message-list__name',
       '.msg-s-message-list__name a',
@@ -78,7 +69,6 @@ const TemplateButton = () => {
         const fullName = nameElement.textContent?.trim() || ""
         if (fullName && fullName !== "LinkedIn" && fullName.length > 1) {
           setContactFullName(fullName)
-          // Extract first name (everything before the first space)
           const firstName = fullName.split(' ')[0]
           setContactName(firstName)
           console.log('Extracted contact info:', { firstName, fullName })
@@ -87,14 +77,12 @@ const TemplateButton = () => {
       }
     }
 
-    // Fallback: try other selectors
     for (const selector of nameSelectors) {
       const nameElement = document.querySelector(selector)
       if (nameElement) {
         const fullName = nameElement.textContent?.trim() || ""
         if (fullName && fullName !== "LinkedIn" && fullName.length > 1) {
           setContactFullName(fullName)
-          // Extract first name (everything before the first space)
           const firstName = fullName.split(' ')[0]
           setContactName(firstName)
           console.log('Extracted contact info (fallback):', { firstName, fullName })
@@ -113,8 +101,6 @@ const TemplateButton = () => {
   const insertTemplate = (template: MessageTemplate) => {
     const processedContent = replaceVariables(template.content)
     console.log('Attempting to insert template:', processedContent)
-    
-    // Try multiple selectors for LinkedIn message input
     const messageInputSelectors = [
       'div[contenteditable="true"][data-artdeco-is-focused="true"]',
       'div[contenteditable="true"]',
@@ -146,38 +132,28 @@ const TemplateButton = () => {
       console.log('Inserting into element:', messageInput)
       
       try {
-        // Clear existing content completely
         messageInput.innerHTML = ""
         
-        // Insert the template content
         messageInput.textContent = processedContent
         
-        // Trigger input event first
         const inputEvent = new Event('input', { bubbles: true, cancelable: true })
         messageInput.dispatchEvent(inputEvent)
-        
-        // Trigger other events to ensure LinkedIn detects the change
         const events = ['keyup', 'change', 'blur', 'focus', 'paste']
         events.forEach(eventType => {
           const event = new Event(eventType, { bubbles: true, cancelable: true })
           messageInput!.dispatchEvent(event)
         })
         
-        // Also try setting the value property if it exists
         if ('value' in messageInput) {
           (messageInput as any).value = processedContent
         }
         
-        // Focus the input
         messageInput.focus()
-        
-        // Force a re-render by briefly changing and restoring content
         setTimeout(() => {
           const currentContent = messageInput!.textContent
           messageInput!.textContent = ""
           messageInput!.textContent = currentContent
           
-          // Trigger final input event
           const finalInputEvent = new Event('input', { bubbles: true, cancelable: true })
           messageInput!.dispatchEvent(finalInputEvent)
         }, 50)
@@ -188,8 +164,6 @@ const TemplateButton = () => {
       }
     } else {
       console.log('Message input not found - trying alternative approach')
-      
-      // Alternative approach: try to find any contenteditable div
       const allContentEditable = document.querySelectorAll('div[contenteditable="true"]')
       console.log('Found contenteditable elements:', allContentEditable.length)
       
@@ -199,8 +173,6 @@ const TemplateButton = () => {
         
         lastInput.innerHTML = processedContent
         lastInput.focus()
-        
-        // Trigger events
         const events = ['input', 'keyup', 'change']
         events.forEach(eventType => {
           const event = new Event(eventType, { bubbles: true, cancelable: true })
@@ -327,7 +299,6 @@ const TemplateButton = () => {
 const LinkedInDM = () => {
   useEffect(() => {
     const addTemplateButton = () => {
-      // Look for message input areas with multiple selectors
       const messageInputSelectors = [
         'div[contenteditable="true"]',
         '.msg-form__contenteditable',
@@ -345,13 +316,11 @@ const LinkedInDM = () => {
       }
 
       if (messageInput) {
-        // Check if template button already exists in the entire document
         const existingButton = document.querySelector('.in-toolkit-template-button')
         if (existingButton) {
           return
         }
 
-        // Create container for template button
         const buttonContainer = document.createElement('div')
         buttonContainer.className = 'in-toolkit-template-button'
         buttonContainer.style.cssText = `
@@ -361,27 +330,20 @@ const LinkedInDM = () => {
           z-index: 1000;
         `
 
-        // Insert the React component
         const root = createRoot(buttonContainer)
         root.render(<TemplateButton />)
-
-        // Add to the input container
         const inputContainer = messageInput.closest('.msg-form__contenteditable-container, .msg-form__contenteditable, .msg-form__contenteditable-wrapper, .msg-form__contenteditable-container')
         if (inputContainer) {
           (inputContainer as HTMLElement).style.position = 'relative'
           inputContainer.appendChild(buttonContainer)
         } else {
-          // Fallback: add to the message input itself
           (messageInput as HTMLElement).style.position = 'relative'
           messageInput.appendChild(buttonContainer)
         }
       }
     }
 
-    // Initial check
     addTemplateButton()
-
-    // Watch for new message inputs with a more targeted approach
     const observer = new MutationObserver((mutations) => {
       let shouldCheck = false
       
@@ -407,7 +369,6 @@ const LinkedInDM = () => {
       }
     })
 
-    // Also check periodically to ensure button stays
     const intervalId = setInterval(() => {
       const existingButton = document.querySelector('.in-toolkit-template-button')
       if (!existingButton) {

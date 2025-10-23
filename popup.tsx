@@ -10,7 +10,6 @@ function IndexPopup() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Load the current focus mode state from storage
     const loadState = async () => {
       const enabled = await storage.get<boolean>("focusModeEnabled")
       setFocusModeEnabled(enabled ?? false)
@@ -24,10 +23,7 @@ function IndexPopup() {
     const newState = !focusModeEnabled
     setFocusModeEnabled(newState)
 
-    // Save the new state to storage
     await storage.set("focusModeEnabled", newState)
-
-    // Notify all LinkedIn tabs about the state change
     const tabs = await chrome.tabs.query({
       url: ["https://www.linkedin.com/*"]
     })
@@ -41,7 +37,6 @@ function IndexPopup() {
             enabled: newState
           },
           (response) => {
-            // Handle any errors silently (e.g., if content script not loaded yet)
             if (chrome.runtime.lastError) {
               console.log(
                 "Content script not ready yet, state will load on page refresh:",

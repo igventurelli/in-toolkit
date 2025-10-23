@@ -15,7 +15,6 @@ interface Quote {
 }
 
 const LinkedInFocus = () => {
-  // Hide/show the main feed and add placeholder div with quotes
   useEffect(() => {
     const PLACEHOLDER_ID = "in-toolkit-placeholder"
 
@@ -32,7 +31,6 @@ const LinkedInFocus = () => {
             if (response && response.success && response.quote) {
               resolve(response.quote)
             } else {
-              // Fallback quote
               resolve({
                 q: "The secret of getting ahead is getting started.",
                 a: "Mark Twain"
@@ -75,7 +73,6 @@ const LinkedInFocus = () => {
         </style>
       `
 
-      // Fetch and display quote
       const quote = fetchQuote().then((quote) => {
         placeholder.innerHTML = `
           <!-- Header -->
@@ -128,7 +125,6 @@ const LinkedInFocus = () => {
         placeholder.innerHTML = `<h1>Error fetching quote</h1><p>${error.message}</p>`
       })
       
-      // Get the extension icon URL by messaging the background script
       const iconUrl = await new Promise<string>((resolve) => {
         chrome.runtime.sendMessage(
           { type: "GET_ICON_URL" },
@@ -138,7 +134,6 @@ const LinkedInFocus = () => {
         )
       })
 
-      // Add click handler for the link
       setTimeout(() => {
         const link = placeholder.querySelector("#get-new-quote")
         if (link) {
@@ -168,14 +163,11 @@ const LinkedInFocus = () => {
       const enabled = await storage.get<boolean>("focusModeEnabled")
       const mainElement = document.querySelector("main") as HTMLElement
       
-      // Only apply focus mode if we're on the /feed page
       if (!isFeedPage()) {
-        // If not on feed page, ensure any existing placeholder is removed
         const placeholder = document.getElementById(PLACEHOLDER_ID)
         if (placeholder) {
           placeholder.remove()
         }
-        // Ensure main element is visible
         if (mainElement) {
           mainElement.style.display = ""
         }
@@ -184,19 +176,15 @@ const LinkedInFocus = () => {
       
       if (mainElement) {
         if (enabled) {
-          // Hide the feed
           mainElement.style.display = "none"
           
-          // Create and insert placeholder div if it doesn't exist
           if (!document.getElementById(PLACEHOLDER_ID)) {
             const placeholder = await createPlaceholder()
             mainElement.parentElement?.insertBefore(placeholder, mainElement.nextSibling)
           }
         } else {
-          // Show the feed
           mainElement.style.display = ""
           
-          // Remove placeholder div
           const placeholder = document.getElementById(PLACEHOLDER_ID)
           if (placeholder) {
             placeholder.remove()
@@ -205,10 +193,8 @@ const LinkedInFocus = () => {
       }
     }
 
-    // Apply on mount
     applyFocusMode()
 
-    // Track URL changes with multiple detection methods
     let currentUrl = window.location.href
     let lastPathname = window.location.pathname
 
@@ -235,7 +221,6 @@ const LinkedInFocus = () => {
       }
     }
 
-    // Method 1: History API overrides
     const originalPushState = history.pushState
     const originalReplaceState = history.replaceState
 
@@ -251,20 +236,16 @@ const LinkedInFocus = () => {
       setTimeout(handleUrlChange, 100)
     }
 
-    // Method 2: Popstate events
     window.addEventListener('popstate', () => {
       console.log('popstate event')
       setTimeout(handleUrlChange, 100)
     })
 
-    // Method 3: Periodic URL checking (fallback)
     const urlCheckInterval = setInterval(() => {
       handleUrlChange()
     }, 1000)
 
-    // Method 4: Mutation observer for DOM changes
     const observer = new MutationObserver((mutations) => {
-      // Check if main content area changed
       mutations.forEach((mutation) => {
         if (mutation.type === 'childList') {
           mutation.addedNodes.forEach((node) => {
@@ -285,7 +266,6 @@ const LinkedInFocus = () => {
       subtree: true
     })
 
-    // Listen for messages from the popup
     const messageListener = async (
       message: { type: string; enabled: boolean }
     ) => {
@@ -293,13 +273,10 @@ const LinkedInFocus = () => {
         const mainElement = document.querySelector("main") as HTMLElement
         const placeholder = document.getElementById(PLACEHOLDER_ID)
         
-        // Only apply focus mode if we're on the /feed page
         if (!isFeedPage()) {
-          // If not on feed page, ensure any existing placeholder is removed
           if (placeholder) {
             placeholder.remove()
           }
-          // Ensure main element is visible
           if (mainElement) {
             mainElement.style.display = ""
           }
@@ -308,19 +285,15 @@ const LinkedInFocus = () => {
         
         if (mainElement) {
           if (message.enabled) {
-            // Hide the feed
             mainElement.style.display = "none"
             
-            // Create and insert placeholder div if it doesn't exist
             if (!placeholder) {
               const newPlaceholder = await createPlaceholder()
               mainElement.parentElement?.insertBefore(newPlaceholder, mainElement.nextSibling)
             }
           } else {
-            // Show the feed
             mainElement.style.display = ""
             
-            // Remove placeholder div
             if (placeholder) {
               placeholder.remove()
             }
@@ -337,13 +310,11 @@ const LinkedInFocus = () => {
       clearInterval(urlCheckInterval)
       observer.disconnect()
       
-      // Restore original history methods
       history.pushState = originalPushState
       history.replaceState = originalReplaceState
     }
   }, [])
 
-  // This component doesn't render anything, it only manipulates the DOM
   return null
 }
 
