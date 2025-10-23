@@ -1,3 +1,10 @@
+## [1.0.7](https://github.com/igventurelli/in-toolkit/compare/v1.0.6...v1.0.7) (2025-10-23)
+
+
+### Bug Fixes
+
+* feed blocker only showing on /feed now ([f1fd0cd](https://github.com/igventurelli/in-toolkit/commit/f1fd0cd041395be84af7d7a041c27f6d7a84f66a))
+
 ## [1.0.6](https://github.com/igventurelli/in-toolkit/compare/v1.0.5...v1.0.6) (2025-10-22)
 
 
